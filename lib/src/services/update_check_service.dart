@@ -26,11 +26,11 @@ class UpdateCheckService extends IUpdateCheckService with MyLogger {
     final versionFromApp = Version(value: pir.version);
 
     if (versionFromApi == versionFromApp) {
-      info('最新バージョンを使用中です: ${versionFromApp.value}');
+      infof('最新バージョンを使用中です: ${versionFromApp.value}', config.enableLogging);
       return false;
     }
 
-    info('新しいアップデートが見つかりました: ${versionFromApi.value}');
+    infof('新しいアップデートが見つかりました: ${versionFromApi.value}', config.enableLogging);
     return true;
   }
 }

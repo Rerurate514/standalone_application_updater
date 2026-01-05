@@ -10,7 +10,8 @@ abstract class IStandaloneUpdateBase {
     final ucs = UpdateCheckService(
       config: config, 
       gar: GithubApiRepositoryImpl(
-        dio: Dio()
+        dio: Dio(),
+        config: config
       ), 
       pir: await PackageInfoRepository.init()
     );

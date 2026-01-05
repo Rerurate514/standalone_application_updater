@@ -30,4 +30,24 @@ mixin MyLogger {
   void fatal(dynamic message) {
     logger.f(message);
   }
+
+  void debugf(dynamic message, bool enableLogging) {
+    if (enableLogging) debug(message);
+  }
+
+  void infof(dynamic message, bool enableLogging) {
+    if (enableLogging) info(message);
+  }
+
+  void warningf(dynamic message, bool enableLogging) {
+    if (enableLogging) warning(message);
+  }
+
+  void errorf(dynamic message, bool enableLogging, [dynamic error, StackTrace? stackTrace]) {
+    if (enableLogging) this.error(message, error, stackTrace);
+  }
+
+  void fatalf(dynamic message, bool enableLogging) {
+    if (enableLogging) fatal(message);
+  }
 }

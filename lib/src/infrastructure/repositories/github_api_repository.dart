@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:standalone_application_updater/src/domain/entities/repository_info.dart';
+import 'package:standalone_application_updater/src/domain/entities/sau_config.dart';
 import 'package:standalone_application_updater/src/domain/interfaces/github_api_repository_interface.dart';
 import 'package:standalone_application_updater/src/infrastructure/models/github_release_response.dart';
 import 'package:standalone_application_updater/src/utils/constants.dart';
@@ -7,9 +8,11 @@ import 'package:standalone_application_updater/src/utils/my_logger.dart';
 
 class GithubApiRepositoryImpl extends IGithubApiRepository with MyLogger {
   final Dio dio;
+  final SAUConfig config;
 
   GithubApiRepositoryImpl({
     required this.dio,
+    required this.config
   });
 
   @override
@@ -23,7 +26,7 @@ class GithubApiRepositoryImpl extends IGithubApiRepository with MyLogger {
       final release = GithubReleaseResponse.fromJson(response.data as Map<String, dynamic>);
       return release;
     } catch (e) {
-      error('Deserialization Error: $e');
+      errorf('Deserialization Error: $e', config.enableLogging);
       return null;
     }
   }
@@ -41,7 +44,7 @@ class GithubApiRepositoryImpl extends IGithubApiRepository with MyLogger {
 
       return response;
     } catch (e) {
-      error('API Request Error: $e');
+      errorf('API Request Error: $e', config.enableLogging);
       return null;
     }
   }
