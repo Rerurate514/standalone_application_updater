@@ -5,7 +5,7 @@ import 'package:standalone_application_updater/src/infrastructure/models/github_
 import 'package:standalone_application_updater/src/utils/constants.dart';
 import 'package:standalone_application_updater/src/utils/my_logger.dart';
 
-class GithubApiRepositoryImpl extends GithubApiRepositoryInterface with MyLogger {
+class GithubApiRepositoryImpl extends IGithubApiRepository with MyLogger {
   final Dio dio;
 
   GithubApiRepositoryImpl({
