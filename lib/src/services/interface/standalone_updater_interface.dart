@@ -1,8 +1,22 @@
+import 'package:dio/dio.dart';
 import 'package:standalone_application_updater/src/domain/entities/repository_info.dart';
 import 'package:standalone_application_updater/src/domain/entities/sau_config.dart';
+import 'package:standalone_application_updater/src/infrastructure/repositories/github_api_repository.dart';
+import 'package:standalone_application_updater/src/infrastructure/repositories/package_info_repository.dart';
+import 'package:standalone_application_updater/src/services/update_check_service.dart';
 
 abstract class IStandaloneUpdateBase {
-  Future<bool> checkForUpdates(RepositoryInfo repoInfo, SAUConfig config);
+  Future<bool> checkForUpdates(RepositoryInfo repoInfo, SAUConfig config) async {
+    final ucs = UpdateCheckService(
+      config: config, 
+      gar: GithubApiRepositoryImpl(
+        dio: Dio()
+      ), 
+      pir: await PackageInfoRepository.init()
+    );
+
+    return await ucs.checkForUpdates(repoInfo);
+  }
   Future<void> downloadUpdate();
   Future<void> applyUpdate();
 }
