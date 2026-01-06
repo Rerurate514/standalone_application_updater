@@ -19,6 +19,6 @@ abstract class IStandaloneUpdateBase {
 
     return await ucs.checkForUpdates(repoInfo);
   }
-  Future<void> downloadUpdate();
+  Future<void> downloadUpdate(UpdateCheckAvailable result);
   Future<void> applyUpdate();
 }

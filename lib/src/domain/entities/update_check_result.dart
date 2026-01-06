@@ -6,13 +6,19 @@ part 'update_check_result.freezed.dart';
 
 @freezed
 sealed class UpdateCheckResult with _$UpdateCheckResult {
-  const factory UpdateCheckResult({
-    required bool hasUpdate,
-    SauRelease? latestRelease,
-    Version? currentVersion,
-  }) = _UpdateCheckResult;
+  // Found latest version
+  const factory UpdateCheckResult.available({
+    required SauRelease latestRelease,
+    required Version currentVersion,
+  }) = UpdateCheckAvailable;
 
-  factory UpdateCheckResult.createFailure() {
-    return UpdateCheckResult(hasUpdate: false);
-  }
+  // Already latest version
+  const factory UpdateCheckResult.upToDate({
+    required Version currentVersion,
+  }) = UpdateCheckUpToDate;
+
+  // Error
+  const factory UpdateCheckResult.error({
+    required String message,
+  }) = UpdateCheckError;
 }

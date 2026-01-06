@@ -22,14 +22,14 @@ class UpdateCheckService extends IUpdateCheckService with MyLogger {
   @override
   Future<UpdateCheckResult> checkForUpdates(RepositoryInfo repoInfo) async {
     final response = await gar.fetchLatestRelease(repoInfo);
-    if (response == null) return UpdateCheckResult.createFailure();
+    if (response == null) return UpdateCheckResult.error(message: "");
 
     final versionFromApi = Version(value: response.tagName);
     final versionFromApp = Version(value: pir.version);
 
     if (versionFromApi == versionFromApp) {
       infof('Using latest version: ${versionFromApp.value}', config.enableLogging);
-      return UpdateCheckResult.createFailure();
+      return UpdateCheckResult.upToDate(currentVersion: versionFromApp);
     }
 
     infof('Found latest version: ${versionFromApi.value}', config.enableLogging);
@@ -40,8 +40,7 @@ class UpdateCheckService extends IUpdateCheckService with MyLogger {
       assets: response.assets.convertToSauAsset()
     );
 
-    return UpdateCheckResult(
-      hasUpdate: true,
+    return UpdateCheckResult.available(
       latestRelease: latestRelease,
       currentVersion: versionFromApp
     );
