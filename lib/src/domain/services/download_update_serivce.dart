@@ -36,6 +36,8 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
 
     infof("status code: ${response?.statusCode}", config.enableLogging);
 
+    if(response == null) return DownloadUpdateResult.failure(message: "Failed to download");
+
     return DownloadUpdateResult.success();
   }
 
@@ -90,36 +92,36 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
     String downloadUrl, 
     String savePath, 
     SAUConfig config,
-  ) async* {
+  ) {
     final controller = StreamController<DownloadUpdateStreamResult>();
 
-    try{
-      await dio.download(
-        downloadUrl,
-        savePath,
-        onReceiveProgress: (received, total) {
-          if (total != -1 && config.enableLogging) {
-            showProgress(received, total);
+    () async {
+      try {
+        await dio.download(
+          downloadUrl,
+          savePath,
+          onReceiveProgress: (received, total) {
+            if (total != -1) {
+              if (config.enableLogging) showProgress(received, total);
 
-            controller.add(
-              DownloadUpdateStreamResult.progress(
-                downloadProgress: DownloadProgress.downloading(received / total)
-              )
-            );
-          }
-        },
-      );
+              controller.add(
+                DownloadUpdateStreamResult.progress(
+                  downloadProgress: DownloadProgress.downloading(received / total),
+                ),
+              );
+            }
+          },
+        );
 
-      controller.add(DownloadUpdateStreamResult.success(
-        savePath: savePath
-      ));
-    } catch(e) {
-      warningf(e, config.enableLogging);
-      controller.add(DownloadUpdateStreamResult.failure(message: e.toString()));
-    } finally {
-      await controller.close();
-    }
+        controller.add(DownloadUpdateStreamResult.success(savePath: savePath));
+      } catch (e) {
+        warningf(e, config.enableLogging);
+        controller.add(DownloadUpdateStreamResult.failure(message: e.toString()));
+      } finally {
+        await controller.close();
+      }
+    }();
 
-    yield* controller.stream;
+    return controller.stream;
   }
 }
