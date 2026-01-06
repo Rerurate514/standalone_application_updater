@@ -12,13 +12,15 @@ import 'package:standalone_application_updater/standalone_application_updater.da
 
 class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
   final Dio dio;
+  final SAUConfig config;
 
   DownloadUpdateSerivce({
-    required this.dio
+    required this.dio,
+    required this.config
   });
 
   @override
-  Future<DownloadUpdateResult> downloadUpdate(UpdateCheckAvailable result, SAUConfig config) async {
+  Future<DownloadUpdateResult> downloadUpdate(UpdateCheckAvailable result) async {
     final List<SauAsset> assets = result.latestRelease.assets;
     final sauPlatformFromApp = SauPlatform.current();
     
