@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:standalone_application_updater/src/domain/entities/download_progress.dart';
 
