@@ -32,18 +32,18 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
   
     infof("Found Asset, Starting to download Asset...", config.enableLogging);
 
-    final response = await _executeDownload(target.downloadUrl, config);
+    final response = await _executeDownload(target.downloadUrl, target.name, config);
 
     infof("status code: ${response?.statusCode}", config.enableLogging);
 
     return DownloadUpdateResult.success();
   }
 
-  Future<Response?> _executeDownload(String downloadUrl, SAUConfig config) async {
+  Future<Response?> _executeDownload(String downloadUrl, String savePath, SAUConfig config) async {
     try{
       final response = await dio.download(
         downloadUrl,
-        config.downloadPath
+        savePath
       );
 
       return response;
