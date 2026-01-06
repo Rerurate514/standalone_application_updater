@@ -43,7 +43,13 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
     try{
       final response = await dio.download(
         downloadUrl,
-        savePath
+        savePath,
+        onReceiveProgress: (received, total) {
+          if (total != -1) {
+            final progress = (received / total * 100).toStringAsFixed(0);
+            infof('Download progress: $progress%', config.enableLogging);
+          }
+        },
       );
 
       return response;
