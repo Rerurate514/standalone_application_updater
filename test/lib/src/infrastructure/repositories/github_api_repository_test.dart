@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:standalone_application_updater/src/domain/entities/repository_info.dart';
+import 'package:standalone_application_updater/src/domain/entities/sau_config.dart';
 import 'package:standalone_application_updater/src/infrastructure/models/github_release_response.dart';
 import 'package:standalone_application_updater/src/infrastructure/repositories/github_api_repository.dart';
 import 'package:mockito/annotations.dart';
@@ -15,7 +16,7 @@ void main() {
 
   setUp(() {
     mockDio = MockDio();
-    repository = GithubApiRepositoryImpl(dio: mockDio);
+    repository = GithubApiRepositoryImpl(dio: mockDio, config: SAUConfig());
   });
 
   final tRepositoryInfo = RepositoryInfo(owner: 'owner', repoName: 'repo');
