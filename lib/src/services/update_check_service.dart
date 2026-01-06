@@ -28,11 +28,11 @@ class UpdateCheckService extends IUpdateCheckService with MyLogger {
     final versionFromApp = Version(value: pir.version);
 
     if (versionFromApi == versionFromApp) {
-      infof('最新バージョンを使用中です: ${versionFromApp.value}', config.enableLogging);
+      infof('Using latest version: ${versionFromApp.value}', config.enableLogging);
       return UpdateCheckResult.createFailure();
     }
 
-    infof('新しいアップデートが見つかりました: ${versionFromApi.value}', config.enableLogging);
+    infof('Found latest version: ${versionFromApi.value}', config.enableLogging);
     
     final latestRelease = SauRelease(
       version: versionFromApi, 
