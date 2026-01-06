@@ -1,5 +1,8 @@
 export 'src/domain/entities/sau_config.dart';
 export 'src/domain/entities/repository_info.dart';
+export 'src/domain/entities/sau_release.dart';
+export 'src/domain/entities/sau_platform.dart';
+export 'src/domain/entities/update_check_result.dart';
 
 import 'package:standalone_application_updater/src/domain/interfaces/standalone_updater_interface.dart';
 
