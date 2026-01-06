@@ -22,14 +22,31 @@ abstract class IStandaloneUpdateBase {
     return await ucs.checkForUpdates(repoInfo);
   }
 
-  Future<DownloadUpdateResult> downloadUpdate(UpdateCheckAvailable result, SAUConfig config) async {
+  Future<DownloadUpdateResult> downloadUpdate(
+    UpdateCheckAvailable result, 
+    SAUConfig config, 
+    { void Function(int received, int total)? onProgress }
+  ) async {
     final Dio dio = Dio();
     final dus = DownloadUpdateSerivce(
       dio: dio,
       config: config
     );
 
-    return await dus.downloadUpdate(result);
+    return await dus.downloadUpdate(result, onProgress);
+  }
+
+    Stream<DownloadUpdateStreamResult> downloadUpdateStream(
+      UpdateCheckAvailable result, 
+      SAUConfig config
+    ) async* {
+    final Dio dio = Dio();
+    final dus = DownloadUpdateSerivce(
+      dio: dio,
+      config: config
+    );
+
+    yield* dus.downloadUpdateStream(result);
   }
 
   Future<void> applyUpdate();

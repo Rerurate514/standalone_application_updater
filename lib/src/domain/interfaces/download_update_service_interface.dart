@@ -2,5 +2,6 @@ import 'package:standalone_application_updater/src/domain/entities/download_upda
 import 'package:standalone_application_updater/src/domain/entities/update_check_result.dart';
 
 abstract class IDownloadUpdateService {
-  Future<DownloadUpdateResult> downloadUpdate(UpdateCheckAvailable result);
+  Future<DownloadUpdateResult> downloadUpdate(UpdateCheckAvailable result, void Function(int received, int total)? onProgress);
+  Stream<DownloadUpdateStreamResult> downloadUpdateStream(UpdateCheckAvailable result);
 }
