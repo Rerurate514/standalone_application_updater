@@ -45,9 +45,8 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
         downloadUrl,
         savePath,
         onReceiveProgress: (received, total) {
-          if (total != -1) {
-            final progress = (received / total * 100).toStringAsFixed(0);
-            infof('Download progress: $progress%', config.enableLogging);
+          if (total != -1 && config.enableLogging) {
+            showProgress(received, total);
           }
         },
       );
