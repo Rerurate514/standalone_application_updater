@@ -116,6 +116,8 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
     } catch(e) {
       warningf(e, config.enableLogging);
       controller.add(DownloadUpdateStreamResult.failure(message: e.toString()));
+    } finally {
+      await controller.close();
     }
 
     yield* controller.stream;
