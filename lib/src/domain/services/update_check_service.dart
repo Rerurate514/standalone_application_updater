@@ -5,7 +5,7 @@ import 'package:standalone_application_updater/src/domain/entities/update_check_
 import 'package:standalone_application_updater/src/domain/entities/version.dart';
 import 'package:standalone_application_updater/src/domain/interfaces/github_api_repository_interface.dart';
 import 'package:standalone_application_updater/src/domain/interfaces/package_info_repository_interface.dart';
-import 'package:standalone_application_updater/src/services/interface/update_check_service_interface.dart';
+import 'package:standalone_application_updater/src/domain/interfaces/update_check_service_interface.dart';
 import 'package:standalone_application_updater/src/utils/my_logger.dart';
 
 class UpdateCheckService extends IUpdateCheckService with MyLogger {

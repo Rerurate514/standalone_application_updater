@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:standalone_application_updater/src/domain/entities/update_check_result.dart';
-import 'package:standalone_application_updater/src/services/interface/standalone_updater_interface.dart';
+import 'package:standalone_application_updater/src/domain/interfaces/standalone_updater_interface.dart';
 
 class WindowsUpdater extends IStandaloneUpdateBase {
   @override

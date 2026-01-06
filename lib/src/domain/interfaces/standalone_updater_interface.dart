@@ -4,7 +4,7 @@ import 'package:standalone_application_updater/src/domain/entities/sau_config.da
 import 'package:standalone_application_updater/src/domain/entities/update_check_result.dart';
 import 'package:standalone_application_updater/src/infrastructure/repositories/github_api_repository.dart';
 import 'package:standalone_application_updater/src/infrastructure/repositories/package_info_repository.dart';
-import 'package:standalone_application_updater/src/services/update_check_service.dart';
+import 'package:standalone_application_updater/src/domain/services/update_check_service.dart';
 
 abstract class IStandaloneUpdateBase {
   Future<UpdateCheckResult> checkForUpdates(RepositoryInfo repoInfo, SAUConfig config) async {
