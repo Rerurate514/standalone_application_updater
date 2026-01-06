@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:standalone_application_updater/src/domain/entities/download_progress.dart';
 
@@ -22,7 +23,9 @@ sealed class DownloadUpdateStreamResult with _$DownloadUpdateStreamResult {
   }) = DownloadUpdateStreamProgress;
 
   // download success
-  const factory DownloadUpdateStreamResult.success() = DownloadUpdateStreamSuccess;
+  const factory DownloadUpdateStreamResult.success({
+    required String savePath,
+  }) = DownloadUpdateStreamSuccess;
 
   // download failure
   const factory DownloadUpdateStreamResult.failure({
