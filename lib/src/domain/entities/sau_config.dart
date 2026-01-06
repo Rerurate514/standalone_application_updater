@@ -5,6 +5,7 @@ part 'sau_config.freezed.dart';
 @freezed
 sealed class SAUConfig with _$SAUConfig {
   factory SAUConfig({
+    required String downloadPath,
     @Default(false) bool enableLogging,
     @Default(false) bool enableHashChecking,
   }) = _SAUConfig;
