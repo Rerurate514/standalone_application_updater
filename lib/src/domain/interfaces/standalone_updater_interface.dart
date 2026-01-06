@@ -3,6 +3,7 @@ import 'package:standalone_application_updater/src/domain/entities/download_upda
 import 'package:standalone_application_updater/src/domain/entities/repository_info.dart';
 import 'package:standalone_application_updater/src/domain/entities/sau_config.dart';
 import 'package:standalone_application_updater/src/domain/entities/update_check_result.dart';
+import 'package:standalone_application_updater/src/domain/services/download_update_serivce.dart';
 import 'package:standalone_application_updater/src/infrastructure/repositories/github_api_repository.dart';
 import 'package:standalone_application_updater/src/infrastructure/repositories/package_info_repository.dart';
 import 'package:standalone_application_updater/src/domain/services/update_check_service.dart';
@@ -20,6 +21,16 @@ abstract class IStandaloneUpdateBase {
 
     return await ucs.checkForUpdates(repoInfo);
   }
-  Future<DownloadUpdateResult> downloadUpdate(UpdateCheckAvailable result, SAUConfig config);
+
+  Future<DownloadUpdateResult> downloadUpdate(UpdateCheckAvailable result, SAUConfig config) async {
+    final Dio dio = Dio();
+    final dus = DownloadUpdateSerivce(
+      dio: dio,
+      config: config
+    );
+
+    return await dus.downloadUpdate(result);
+  }
+
   Future<void> applyUpdate();
 }
