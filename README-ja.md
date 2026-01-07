@@ -1,3 +1,8 @@
+# Standalone Application Updater
+## はじめに
+このDartパッケージは、スタンドアロンで動作するデスクトップアプリの最新版があるかを確認し、ダウンロードすることができるパッケージです。
+この最新版というのは、GithubのReleasesを確認して、そのAssetをダウンロードするものです。
+
 ### Github-Releases命名規則
 アプリ名 - OS名 - アーキテクチャ名
 
