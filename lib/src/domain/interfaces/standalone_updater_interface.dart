@@ -24,6 +24,7 @@ abstract class IStandaloneUpdateBase {
 
   Future<DownloadUpdateResult> downloadUpdate(
     UpdateCheckAvailable result, 
+    String savePath,
     SAUConfig config, 
     { void Function(int received, int total)? onProgress }
   ) async {
@@ -33,11 +34,12 @@ abstract class IStandaloneUpdateBase {
       config: config
     );
 
-    return await dus.downloadUpdate(result, onProgress);
+    return await dus.downloadUpdate(result, savePath, onProgress);
   }
 
     Stream<DownloadUpdateStreamResult> downloadUpdateStream(
       UpdateCheckAvailable result, 
+      String savePath,
       SAUConfig config
     ) async* {
     final Dio dio = Dio();
@@ -46,7 +48,7 @@ abstract class IStandaloneUpdateBase {
       config: config
     );
 
-    yield* dus.downloadUpdateStream(result);
+    yield* dus.downloadUpdateStream(result, savePath);
   }
 
   Future<void> applyUpdate();

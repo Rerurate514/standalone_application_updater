@@ -1,11 +1,7 @@
-// ignore: depend_on_referenced_packages
 import 'dart:async';
-
+// ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
-import 'package:standalone_application_updater/src/domain/entities/download_progress.dart';
-
-import 'package:standalone_application_updater/src/domain/entities/download_update_result.dart';
 import 'package:standalone_application_updater/src/domain/interfaces/download_update_service_interface.dart';
 import 'package:standalone_application_updater/src/utils/my_logger.dart';
 import 'package:standalone_application_updater/standalone_application_updater.dart';
@@ -20,7 +16,11 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
   });
 
   @override
-  Future<DownloadUpdateResult> downloadUpdate(UpdateCheckAvailable result, void Function(int received, int total)? onProgress) async {
+  Future<DownloadUpdateResult> downloadUpdate(
+    UpdateCheckAvailable result, 
+    String savePath,
+    void Function(int received, int total)? onProgress
+  ) async {
     final List<SauAsset> assets = result.latestRelease.assets;
     final sauPlatformFromApp = SauPlatform.current();
     
@@ -32,7 +32,8 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
   
     infof("Found Asset, Starting to download Asset...", config.enableLogging);
 
-    final response = await _executeDownload(target.downloadUrl, target.name, onProgress, config);
+    final path = "$savePath/${target.name}";
+    final response = await _executeDownload(target.downloadUrl, path, onProgress, config);
 
     infof("status code: ${response?.statusCode}", config.enableLogging);
 
@@ -68,7 +69,7 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
   }
   
   @override
-  Stream<DownloadUpdateStreamResult> downloadUpdateStream(UpdateCheckAvailable result) async* {
+  Stream<DownloadUpdateStreamResult> downloadUpdateStream(UpdateCheckAvailable result, String savePath) async* {
     final List<SauAsset> assets = result.latestRelease.assets;
     final sauPlatformFromApp = SauPlatform.current();
     
@@ -83,7 +84,8 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
   
     infof("Found Asset, Starting to download Asset...", config.enableLogging);
 
-    final downloadResult = _executeDownloadStream(target.downloadUrl, target.name, config);
+    final path = "$savePath/${target.name}";
+    final downloadResult = _executeDownloadStream(target.downloadUrl, path, config);
 
     yield* downloadResult;
   }
