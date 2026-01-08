@@ -43,7 +43,7 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
 
     if(response == null) throw SauDownloadException.createException();
 
-    return DownloadUpdateResult.success();
+    return DownloadUpdateResult.success(savePath: path);
   }
 
   Future<Response?> _executeDownload(
