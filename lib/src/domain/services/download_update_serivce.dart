@@ -106,7 +106,10 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
 
               controller.add(
                 DownloadUpdateStreamResult.progress(
-                  downloadProgress: DownloadProgress.downloading(received / total),
+                  downloadProgress: DownloadProgress(
+                    receivedBytes: received, 
+                    totalBytes: total
+                  ),
                 ),
               );
             }
