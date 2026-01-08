@@ -10,7 +10,7 @@ class SauDownloadException extends SauException {
   SauDownloadException(super.message, {this.statusCode});
 
   factory SauDownloadException.throwException({dynamic e}) {
-    return SauDownloadException(Constants.sauDownloadException + e);
+    return SauDownloadException(Constants.sauDownloadException + e.toString());
   }
 }
 
@@ -26,7 +26,7 @@ class SauJsonDeserializationException extends SauException {
   SauJsonDeserializationException(super.message);
 
   factory SauJsonDeserializationException.throwException({dynamic e}) {
-    return SauJsonDeserializationException(Constants.sauJsonDeserializationException + e);
+    return SauJsonDeserializationException(Constants.sauJsonDeserializationException + e.toString());
   }
 }
 
@@ -34,7 +34,7 @@ class SauApiRequestException extends SauException {
   SauApiRequestException(super.message);
 
   factory SauApiRequestException.throwException({dynamic e}) {
-    return SauApiRequestException(Constants.sauApiRequestException + e);
+    return SauApiRequestException(Constants.sauApiRequestException + e.toString());
   }
 }
 
