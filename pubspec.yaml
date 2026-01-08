@@ -8,6 +8,7 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
+  archive: ^4.0.7
   collection: ^1.19.1
   dio: ^5.9.0
   flutter:
