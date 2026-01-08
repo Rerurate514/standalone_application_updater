@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:io';
-// ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
-// ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as p;
 import 'package:standalone_application_updater/src/domain/interfaces/download_update_service_interface.dart';
 import 'package:standalone_application_updater/src/utils/exceptions.dart';
