@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 // ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
+// ignore: depend_on_referenced_packages
+import 'package:path/path.dart' as p;
 import 'package:standalone_application_updater/src/domain/interfaces/download_update_service_interface.dart';
 import 'package:standalone_application_updater/src/utils/my_logger.dart';
 import 'package:standalone_application_updater/standalone_application_updater.dart';
@@ -18,8 +21,10 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
   @override
   Future<DownloadUpdateResult> downloadUpdate(
     UpdateCheckAvailable result, 
-    String savePath,
-    void Function(int received, int total)? onProgress
+    void Function(int received, int total)? onProgress,
+    {
+      String? savePath,
+    }
   ) async {
     final List<SauAsset> assets = result.latestRelease.assets;
     final sauPlatformFromApp = SauPlatform.current();
@@ -32,7 +37,7 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
   
     infof("Found Asset, Starting to download Asset...", config.enableLogging);
 
-    final path = "$savePath/${target.name}";
+    final path = savePath != null ? p.join(savePath, target.name) : _getExecutableDirectory();
     final response = await _executeDownload(target.downloadUrl, path, onProgress, config);
 
     infof("status code: ${response?.statusCode}", config.enableLogging);
@@ -69,7 +74,12 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
   }
   
   @override
-  Stream<DownloadUpdateStreamResult> downloadUpdateStream(UpdateCheckAvailable result, String savePath) async* {
+  Stream<DownloadUpdateStreamResult> downloadUpdateStream(
+    UpdateCheckAvailable result, 
+    {
+      String? savePath
+    }
+  ) async* {
     final List<SauAsset> assets = result.latestRelease.assets;
     final sauPlatformFromApp = SauPlatform.current();
     
@@ -84,7 +94,7 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
   
     infof("Found Asset, Starting to download Asset...", config.enableLogging);
 
-    final path = "$savePath/${target.name}";
+    final path = savePath != null ? p.join(savePath, target.name) : _getExecutableDirectory();
     final downloadResult = _executeDownloadStream(target.downloadUrl, path, config);
 
     yield* downloadResult;
@@ -128,5 +138,11 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
     }();
 
     return controller.stream;
+  }
+
+  String _getExecutableDirectory() {
+    final executablePath = Platform.resolvedExecutable;
+    final executableDir = p.dirname(executablePath);
+    return executableDir;
   }
 }

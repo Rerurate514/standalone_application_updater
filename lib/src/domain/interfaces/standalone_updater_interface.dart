@@ -24,9 +24,11 @@ abstract class IStandaloneUpdateBase {
 
   Future<DownloadUpdateResult> downloadUpdate(
     UpdateCheckAvailable result, 
-    String savePath,
     SAUConfig config, 
-    { void Function(int received, int total)? onProgress }
+    { 
+      void Function(int received, int total)? onProgress,
+      String? savePath,
+    }
   ) async {
     final Dio dio = Dio();
     final dus = DownloadUpdateSerivce(
@@ -34,13 +36,15 @@ abstract class IStandaloneUpdateBase {
       config: config
     );
 
-    return await dus.downloadUpdate(result, savePath, onProgress);
+    return await dus.downloadUpdate(result, onProgress, savePath: savePath);
   }
 
     Stream<DownloadUpdateStreamResult> downloadUpdateStream(
       UpdateCheckAvailable result, 
-      String savePath,
-      SAUConfig config
+      SAUConfig config,
+      {
+        String? savePath
+      }
     ) async* {
     final Dio dio = Dio();
     final dus = DownloadUpdateSerivce(
@@ -48,7 +52,7 @@ abstract class IStandaloneUpdateBase {
       config: config
     );
 
-    yield* dus.downloadUpdateStream(result, savePath);
+    yield* dus.downloadUpdateStream(result, savePath: savePath);
   }
 
   Future<void> applyUpdate();
