@@ -137,7 +137,7 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
           exception = SauDownloadException.createException(e: e);
         }
         
-        controller.add(DownloadUpdateStreamResult.failure(message: exception.toString()));
+        controller.add(DownloadUpdateStreamResult.failure(exception: exception));
       } finally {
         await controller.close();
       }

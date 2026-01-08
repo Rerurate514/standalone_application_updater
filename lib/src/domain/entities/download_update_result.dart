@@ -10,7 +10,7 @@ sealed class DownloadUpdateResult with _$DownloadUpdateResult {
 
   // download failure
   const factory DownloadUpdateResult.failure({
-    required String message
+    required Exception exception
   }) = DownloadUpdateFailure;
 }
 
@@ -28,6 +28,6 @@ sealed class DownloadUpdateStreamResult with _$DownloadUpdateStreamResult {
 
   // download failure
   const factory DownloadUpdateStreamResult.failure({
-    required String message
+    required Exception exception
   }) = DownloadUpdateStreamFailure;
 }
