@@ -16,7 +16,7 @@ void main() {
 
   setUp(() {
     mockDio = MockDio();
-    repository = GithubApiRepositoryImpl(dio: mockDio, config: SAUConfig());
+    repository = GithubApiRepositoryImpl(dio: mockDio, config: SauConfig());
   });
 
   final tRepositoryInfo = RepositoryInfo(owner: 'owner', repoName: 'repo');

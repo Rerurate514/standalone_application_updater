@@ -9,7 +9,7 @@ import 'package:standalone_application_updater/src/domain/interfaces/update_chec
 import 'package:standalone_application_updater/src/utils/my_logger.dart';
 
 class UpdateCheckService extends IUpdateCheckService with MyLogger {
-  final SAUConfig config;
+  final SauConfig config;
   final IGithubApiRepository gar;
   final IPackageInfoRepository pir;
 

@@ -9,7 +9,7 @@ import 'package:standalone_application_updater/src/utils/my_logger.dart';
 
 class GithubApiRepositoryImpl extends IGithubApiRepository with MyLogger {
   final Dio dio;
-  final SAUConfig config;
+  final SauConfig config;
 
   GithubApiRepositoryImpl({
     required this.dio,

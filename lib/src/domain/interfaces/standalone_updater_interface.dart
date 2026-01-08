@@ -9,7 +9,7 @@ import 'package:standalone_application_updater/src/infrastructure/repositories/p
 import 'package:standalone_application_updater/src/domain/services/update_check_service.dart';
 
 abstract class IStandaloneUpdateBase {
-  Future<UpdateCheckResult> checkForUpdates(RepositoryInfo repoInfo, SAUConfig config) async {
+  Future<UpdateCheckResult> checkForUpdates(RepositoryInfo repoInfo, SauConfig config) async {
     final ucs = UpdateCheckService(
       config: config, 
       gar: GithubApiRepositoryImpl(
@@ -24,7 +24,7 @@ abstract class IStandaloneUpdateBase {
 
   Future<DownloadUpdateResult> downloadUpdate(
     UpdateCheckAvailable result, 
-    SAUConfig config, 
+    SauConfig config, 
     { 
       void Function(int received, int total)? onProgress,
       String? savePath,
@@ -41,7 +41,7 @@ abstract class IStandaloneUpdateBase {
 
     Stream<DownloadUpdateStreamResult> downloadUpdateStream(
       UpdateCheckAvailable result, 
-      SAUConfig config,
+      SauConfig config,
       {
         String? savePath
       }

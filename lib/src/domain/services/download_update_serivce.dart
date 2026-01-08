@@ -12,7 +12,7 @@ import 'package:standalone_application_updater/standalone_application_updater.da
 
 class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
   final Dio dio;
-  final SAUConfig config;
+  final SauConfig config;
 
   DownloadUpdateSerivce({
     required this.dio,
@@ -52,7 +52,7 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
     String downloadUrl, 
     String savePath, 
     void Function(int received, int total)? onProgress,
-    SAUConfig config,
+    SauConfig config,
   ) async {
     try{
       final response = await dio.download(
@@ -101,7 +101,7 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
   Stream<DownloadUpdateStreamResult> _executeDownloadStream(
     String downloadUrl, 
     String savePath, 
-    SAUConfig config,
+    SauConfig config,
   ) {
     final controller = StreamController<DownloadUpdateStreamResult>();
 
