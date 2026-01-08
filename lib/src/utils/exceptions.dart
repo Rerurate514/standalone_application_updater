@@ -3,6 +3,9 @@ import 'package:standalone_application_updater/src/utils/constants.dart';
 sealed class SauException implements Exception {
   final String message;
   SauException(this.message);
+
+  @override
+  String toString() => message;
 }
 
 class SauDownloadException extends SauException {
