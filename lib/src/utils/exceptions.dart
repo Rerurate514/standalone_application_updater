@@ -12,7 +12,7 @@ class SauDownloadException extends SauException {
   final int? statusCode;
   SauDownloadException(super.message, {this.statusCode});
 
-  factory SauDownloadException.throwException({dynamic e}) {
+  factory SauDownloadException.createException({dynamic e}) {
     return SauDownloadException(Constants.sauDownloadException + e.toString());
   }
 }
@@ -20,7 +20,7 @@ class SauDownloadException extends SauException {
 class SauNotExistFileException extends SauException {
   SauNotExistFileException(super.message);
 
-  factory SauNotExistFileException.throwException() {
+  factory SauNotExistFileException.createException() {
     return SauNotExistFileException(Constants.sauNotExistFileException);
   }
 }
@@ -28,23 +28,51 @@ class SauNotExistFileException extends SauException {
 class SauJsonDeserializationException extends SauException {
   SauJsonDeserializationException(super.message);
 
-  factory SauJsonDeserializationException.throwException({dynamic e}) {
+  factory SauJsonDeserializationException.createException({dynamic e}) {
     return SauJsonDeserializationException(Constants.sauJsonDeserializationException + e.toString());
   }
 }
 
 class SauApiRequestException extends SauException {
-  SauApiRequestException(super.message);
+  final int? statusCode;
+  SauApiRequestException(super.message, {this.statusCode});
 
-  factory SauApiRequestException.throwException({dynamic e}) {
-    return SauApiRequestException(Constants.sauApiRequestException + e.toString());
+  factory SauApiRequestException.createException({dynamic e, int? statusCode}) {
+    return SauApiRequestException(
+      Constants.sauApiRequestException + e.toString(),
+      statusCode: statusCode,
+    );
   }
 }
 
 class SauUnsupportedOSException extends SauException {
   SauUnsupportedOSException(super.message);
 
-  factory SauUnsupportedOSException.throwException() {
+  factory SauUnsupportedOSException.createException() {
     return SauUnsupportedOSException(Constants.sauUnsupportedOSException);
+  }
+}
+
+class SauHashMismatchException extends SauException {
+  SauHashMismatchException(super.message);
+
+  factory SauHashMismatchException.createException() {
+    return SauHashMismatchException(Constants.sauHashMismatchException);
+  }
+}
+
+class SauPermissionException extends SauException {
+  SauPermissionException(super.message);
+
+  factory SauPermissionException.createException({dynamic e}) {
+    return SauPermissionException(Constants.sauPermissionException + e.toString());
+  }
+}
+
+class SauArchiveException extends SauException {
+  SauArchiveException(super.message);
+
+  factory SauArchiveException.createException({dynamic e}) {
+    return SauArchiveException(Constants.sauArchiveException + e.toString());
   }
 }

@@ -34,7 +34,7 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
       (asset) => SauPlatform.fromFileName(asset.name) == sauPlatformFromApp,
     );
 
-    if(target == null) throw SauNotExistFileException.throwException();
+    if(target == null) throw SauNotExistFileException.createException();
   
     infof("Found Asset, Starting to download Asset...", config.enableLogging);
 
@@ -43,7 +43,7 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
 
     infof("status code: ${response?.statusCode}", config.enableLogging);
 
-    if(response == null) throw SauDownloadException.throwException();
+    if(response == null) throw SauDownloadException.createException();
 
     return DownloadUpdateResult.success();
   }
@@ -88,7 +88,7 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
       (asset) => SauPlatform.fromFileName(asset.name) == sauPlatformFromApp,
     );
 
-    if(target == null) throw SauNotExistFileException.throwException();
+    if(target == null) throw SauNotExistFileException.createException();
   
     infof("Found Asset, Starting to download Asset...", config.enableLogging);
 
@@ -129,7 +129,15 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
         controller.add(DownloadUpdateStreamResult.success(savePath: savePath));
       } catch (e) {
         warningf(e, config.enableLogging);
-        throw SauDownloadException.throwException(e: e);
+        SauException exception;
+        
+        if (e.toString().contains('Access is denied')) {
+          exception = SauPermissionException.createException(e: e);
+        } else {
+          exception = SauDownloadException.createException(e: e);
+        }
+        
+        controller.add(DownloadUpdateStreamResult.failure(message: exception.toString()));
       } finally {
         await controller.close();
       }

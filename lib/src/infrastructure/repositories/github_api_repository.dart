@@ -26,7 +26,7 @@ class GithubApiRepositoryImpl extends IGithubApiRepository with MyLogger {
       return release;
     } catch (e) {
       errorf('Deserialization Error: $e', config.enableLogging);
-      throw SauJsonDeserializationException.throwException(e: e);
+      throw SauJsonDeserializationException.createException(e: e);
     }
   }
 
@@ -44,7 +44,7 @@ class GithubApiRepositoryImpl extends IGithubApiRepository with MyLogger {
       return response;
     } catch (e) {
       errorf('API Request Error: $e', config.enableLogging);
-      throw SauApiRequestException.throwException(e: e);
+      throw SauApiRequestException.createException(e: e);
     }
   }
 }
