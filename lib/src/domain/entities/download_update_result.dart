@@ -3,10 +3,19 @@ import 'package:standalone_application_updater/src/domain/entities/download_prog
 
 part 'download_update_result.freezed.dart';
 
+abstract interface class IDownloadSuccess {
+  String get savePath;
+}
+
 @freezed
 sealed class DownloadUpdateResult with _$DownloadUpdateResult {
+  const DownloadUpdateResult._();
+
   // download success
-  const factory DownloadUpdateResult.success() = DownloadUpdateSuccess;
+  @Implements<IDownloadSuccess>()
+  const factory DownloadUpdateResult.success({
+    required String savePath
+  }) = DownloadUpdateSuccess;
 
   // download failure
   const factory DownloadUpdateResult.failure({
@@ -16,14 +25,17 @@ sealed class DownloadUpdateResult with _$DownloadUpdateResult {
 
 @freezed
 sealed class DownloadUpdateStreamResult with _$DownloadUpdateStreamResult {
+  const DownloadUpdateStreamResult._();
+
   // progress to download
   const factory DownloadUpdateStreamResult.progress({
     required DownloadProgress downloadProgress
   }) = DownloadUpdateStreamProgress;
 
   // download success
+  @Implements<IDownloadSuccess>()
   const factory DownloadUpdateStreamResult.success({
-    required String savePath,
+    required String savePath
   }) = DownloadUpdateStreamSuccess;
 
   // download failure

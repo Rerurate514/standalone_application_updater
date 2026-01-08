@@ -55,5 +55,5 @@ abstract class IStandaloneUpdateBase {
     yield* dus.downloadUpdateStream(result, savePath: savePath);
   }
 
-  Future<void> applyUpdate();
+  Future<void> applyUpdate(IDownloadSuccess result);
 }
