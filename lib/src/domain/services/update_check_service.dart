@@ -22,7 +22,6 @@ class UpdateCheckService extends IUpdateCheckService with MyLogger {
   @override
   Future<UpdateCheckResult> checkForUpdates(RepositoryInfo repoInfo) async {
     final response = await gar.fetchLatestRelease(repoInfo);
-    if (response == null) return UpdateCheckResult.error(message: "");
 
     final versionFromApi = Version(value: response.tagName);
     final versionFromApp = Version(value: pir.version);

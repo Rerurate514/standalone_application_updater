@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as p;
 import 'package:standalone_application_updater/src/domain/interfaces/download_update_service_interface.dart';
+import 'package:standalone_application_updater/src/utils/exceptions.dart';
 import 'package:standalone_application_updater/src/utils/my_logger.dart';
 import 'package:standalone_application_updater/standalone_application_updater.dart';
 
@@ -33,7 +34,7 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
       (asset) => SauPlatform.fromFileName(asset.name) == sauPlatformFromApp,
     );
 
-    if(target == null) return DownloadUpdateFailure(message: "The latest version source could not be obtained. This is likely because source compatible with the current OS (architecture) does not exist.");
+    if(target == null) throw SauNotExistFileException.throwException();
   
     infof("Found Asset, Starting to download Asset...", config.enableLogging);
 
@@ -42,7 +43,7 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
 
     infof("status code: ${response?.statusCode}", config.enableLogging);
 
-    if(response == null) return DownloadUpdateResult.failure(message: "Failed to download");
+    if(response == null) throw SauDownloadException.throwException();
 
     return DownloadUpdateResult.success();
   }
@@ -87,10 +88,7 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
       (asset) => SauPlatform.fromFileName(asset.name) == sauPlatformFromApp,
     );
 
-    if(target == null) {
-      yield DownloadUpdateStreamResult.failure(message: "The latest version source could not be obtained. This is likely because source compatible with the current OS (architecture) does not exist.");
-      return;
-    }
+    if(target == null) throw SauNotExistFileException.throwException();
   
     infof("Found Asset, Starting to download Asset...", config.enableLogging);
 
@@ -131,7 +129,7 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
         controller.add(DownloadUpdateStreamResult.success(savePath: savePath));
       } catch (e) {
         warningf(e, config.enableLogging);
-        controller.add(DownloadUpdateStreamResult.failure(message: e.toString()));
+        throw SauDownloadException.throwException(e: e);
       } finally {
         await controller.close();
       }

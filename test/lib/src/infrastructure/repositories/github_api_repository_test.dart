@@ -66,7 +66,7 @@ void main() {
       final result = await repository.fetchLatestRelease(tRepositoryInfo);
 
       expect(result, isA<GithubReleaseResponse>());
-      expect(result?.tagName, 'v1.0.0');
+      expect(result.tagName, 'v1.0.0');
       verify(mockDio.get(tUrl, options: anyNamed('options'))).called(1);
     });
 
