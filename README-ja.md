@@ -34,7 +34,7 @@ if(updateCheckResult is UpdateCheckAvailable) {
     }
 }
 
-// ストリームでダウンロード進捗を取得
+// ストリームでダウンロード進捗を取得するならこっち
 if(updateCheckResult is UpdateCheckAvailable) {
     updater.downloadUpdateStream(updateCheckResult,config).listen((downloadResult) {
         switch(downloadResult) {
