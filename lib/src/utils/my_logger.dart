@@ -54,14 +54,14 @@ mixin MyLogger {
   }
 
   void showProgress(int received, int total) {
-  if (total <= 0) return;
-  
-  final progress = (received / total * 100).toStringAsFixed(1);
-  
-  stdout.write('\rDownloading... $progress%  ');
+    if (total <= 0) return;
+    
+    final progress = (received / total * 100).toStringAsFixed(1);
+    
+    stdout.write('\rDownloading... $progress%  ');
 
-  if (received == total) {
-    stdout.writeln('\nDownload complete!');
+    if (received == total) {
+      stdout.writeln('\nDownload complete!');
+    }
   }
-}
 }
