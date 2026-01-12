@@ -5,6 +5,8 @@ import 'package:standalone_application_updater/src/domain/entities/sau_config.da
 import 'package:standalone_application_updater/src/domain/interfaces/apply_update_service_interface.dart';
 import 'package:standalone_application_updater/src/domain/interfaces/archive_repository_interface.dart';
 import 'package:standalone_application_updater/src/utils/my_logger.dart';
+import 'package:path/path.dart' as p;
+
 
 class WindowsApplyUpdateService extends IApplyUpdateService with MyLogger {
   final IArchiveRepository ar;
@@ -14,7 +16,7 @@ class WindowsApplyUpdateService extends IApplyUpdateService with MyLogger {
   });
 
   @override
-  Future<bool> applyUpdate(IDownloadSuccess result, SauConfig config) async {
+  Future<bool> applyUpdate(IDownloadSuccess result, String entryPath, SauConfig config) async {
     final file = File(result.savePath);
 
     if (!await file.exists()) {
@@ -22,13 +24,14 @@ class WindowsApplyUpdateService extends IApplyUpdateService with MyLogger {
       return false;
     }
 
-    await _extractZip(result.savePath, result.savePath);
+    final zipFileName = p.withoutExtension(result.savePath);
+    await _extractZip(result.savePath, zipFileName);
 
     try {
       infof("Attempting to start the update process: ${result.savePath}", config.enableLogging);
 
       final process = await Process.start(
-        result.savePath,
+        p.join(zipFileName, entryPath),
         [],
         mode: ProcessStartMode.detached,
       );
