@@ -6,10 +6,10 @@ import 'package:standalone_application_updater/src/domain/interfaces/apply_updat
 import 'package:standalone_application_updater/src/domain/interfaces/archive_repository_interface.dart';
 import 'package:standalone_application_updater/src/utils/my_logger.dart';
 
-class ApplyUpdateService extends IApplyUpdateService with MyLogger {
+class WindowsApplyUpdateService extends IApplyUpdateService with MyLogger {
   final IArchiveRepository ar;
 
-  ApplyUpdateService({
+  WindowsApplyUpdateService({
     required this.ar
   });
 
