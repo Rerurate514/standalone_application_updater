@@ -1,7 +1,8 @@
 name: standalone_application_updater
-description: "A new Flutter package project."
+description: A comprehensive Flutter package for checking, downloading, and verifying standalone desktop application updates from GitHub Releases.
 version: 0.0.1
-homepage:
+repository: https://github.com/Rerurate514/standalone_application_updater/
+issue_tracker: https://github.com/Rerurate514/standalone_application_updater/issues
 
 environment:
   sdk: ^3.9.2
@@ -28,4 +29,13 @@ dev_dependencies:
   json_serializable: ^6.11.3
   mockito: ^5.6.1
 
+topics:
+  - updater
+  - desktop
+  - github-releases
+  - auto-update
+  - windows
+
 flutter:
+  platforms:
+    windows:
