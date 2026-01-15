@@ -134,3 +134,6 @@ GitHubのリリースアセットに `.sha256` 形式のファイルが含まれ
 | Linux   | x64         | `*-v1.0.0-linux-x64.tar.gz`    | `flutter build linux`           | `build/linux/x64/release/bundle/`     |
 | Linux   | arm64       | `*-v1.0.0-linux-arm64.tar.gz`  | `flutter build linux --arm64`   | `build/linux/arm64/release/bundle/`   |
 
+## おわり
+一応、記事とかあったりします。
+https://rerurate.com/articles/Flutter%E3%81%AE%E3%83%87%E3%82%B9%E3%82%AF%E3%83%88%E3%83%83%E3%83%97%E3%82%B9%E3%82%BF%E3%83%B3%E3%83%89%E3%82%A2%E3%83%AD%E3%83%B3%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E8%87%AA%E5%8B%95%E6%9B%B4%E6%96%B0%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%82%92%E4%BD%9C%E3%81%A3%E3%81%9FfromGithubAssets
