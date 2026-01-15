@@ -4,6 +4,8 @@ import 'package:standalone_application_updater/src/domain/entities/repository_in
 import 'package:standalone_application_updater/src/domain/entities/sau_config.dart';
 import 'package:standalone_application_updater/src/domain/entities/update_check_result.dart';
 import 'package:standalone_application_updater/src/domain/services/download_update_serivce.dart';
+import 'package:standalone_application_updater/src/domain/services/sha256_check_service.dart';
+import 'package:standalone_application_updater/src/infrastructure/repositories/crypto_repository.dart';
 import 'package:standalone_application_updater/src/infrastructure/repositories/github_api_repository.dart';
 import 'package:standalone_application_updater/src/infrastructure/repositories/package_info_repository.dart';
 import 'package:standalone_application_updater/src/domain/services/update_check_service.dart';
@@ -31,8 +33,15 @@ abstract class IStandaloneUpdateBase {
     }
   ) async {
     final Dio dio = Dio();
+    final cr = CryptoRepository(config: config);
+    final Sha256CheckService scs = Sha256CheckService(
+      dio: dio, 
+      cr: cr, 
+      config: config
+    );
     final dus = DownloadUpdateSerivce(
       dio: dio,
+      scs: scs,
       config: config
     );
 
@@ -47,8 +56,15 @@ abstract class IStandaloneUpdateBase {
       }
     ) async* {
     final Dio dio = Dio();
+    final cr = CryptoRepository(config: config);
+    final Sha256CheckService scs = Sha256CheckService(
+      dio: dio, 
+      cr: cr, 
+      config: config
+    );
     final dus = DownloadUpdateSerivce(
       dio: dio,
+      scs: scs,
       config: config
     );
 
