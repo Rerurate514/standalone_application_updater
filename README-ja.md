@@ -24,7 +24,6 @@ MACOSとLINUXのPR待っています。
 // パッケージコンフィグを設定
 final config = SauConfig(
   enableLogging: false,
-  enableHashChecking: true
 );
 
 // パッケージインスタンスの取得
