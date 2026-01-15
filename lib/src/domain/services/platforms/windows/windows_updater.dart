@@ -8,12 +8,23 @@ import 'package:standalone_application_updater/standalone_application_updater.da
 
 class WindowsUpdater extends IStandaloneUpdateBase with MyLogger {
   @override
-  Future<bool> applyUpdate(IDownloadSuccess result, String entryPath, SauConfig config) async {
+  Future<bool> applyUpdate(
+    IDownloadSuccess result, 
+    String entryPath, 
+    SauConfig config,
+    {
+      bool isAutoExit = false
+    }
+  ) async {
     if (!Platform.isWindows) throw UnsupportedError("WindowsUpdater was called on a non-Windows platform");
 
     final ar = ArchiveRepository();
     final aus = WindowsApplyUpdateService(ar: ar);
+
+    final applyResult = await aus.applyUpdate(result, entryPath, config);
+
+    if(applyResult && isAutoExit) exit(0);
     
-    return await aus.applyUpdate(result, entryPath, config);
+    return applyResult;
   }
 }

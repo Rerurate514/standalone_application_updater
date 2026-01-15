@@ -52,7 +52,12 @@ if(updateCheckResult is UpdateCheckAvailable) {
       switch(isSHA256Valid) {
         case Sha256CheckValid(): {
           print("SHA256の整合性を確認");
-          updater.applyUpdate(downloadResult, "Windowsターゲットならzip内の実行ファイルまでのパス。(例：release/app.exe)", config);
+          updater.applyUpdate(
+            downloadResult, 
+            "Windowsターゲットならzip内の実行ファイルまでのパス。(例：release/app.exe)", 
+            config,
+            isAutoExit: true // trueなら起動後に自動的にアプリを終了させます
+          );
         }
         case Sha256CheckInvalid(): {
           print("SHA256が一致しません。");

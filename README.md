@@ -63,7 +63,12 @@ if(updateCheckResult is UpdateCheckAvailable) {
         case Sha256CheckValid(): {
           print("SHA256 integrity verified");
           // On Windows, provide the path to the executable inside the zip.
-          updater.applyUpdate(downloadResult, "release/app.exe", config);
+          updater.applyUpdate(
+            downloadResult, 
+            "release/app.exe", 
+            config,
+            isAutoExit: true //  If true, the app will automatically close after startup.
+          );
         }
         case Sha256CheckInvalid(): {
           print("SHA256 mismatch.");

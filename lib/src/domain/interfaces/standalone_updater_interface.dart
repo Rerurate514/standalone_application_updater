@@ -74,5 +74,12 @@ abstract class IStandaloneUpdateBase {
     );
   }
 
-  Future<void> applyUpdate(IDownloadSuccess result, String entryPath, SauConfig config);
+  Future<void> applyUpdate(
+    IDownloadSuccess result, 
+    String entryPath, 
+    SauConfig config,
+    {
+      bool isAutoExit = false
+    }
+  );
 }
