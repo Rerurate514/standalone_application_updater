@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:standalone_application_updater/src/domain/interfaces/crypto_repository_interface.dart';
@@ -28,7 +29,7 @@ class CryptoRepository extends ICryptoRepository with MyLogger {
     final expectedHash = await _extractHashFromFile(sha256FilePath);
 
     if(expectedHash == null) return false;
-
+    
     return actualHash.toLowerCase() == expectedHash.toLowerCase();
   }
 
@@ -37,17 +38,20 @@ class CryptoRepository extends ICryptoRepository with MyLogger {
       final file = File(sha256FilePath);
       if (!await file.exists()) return null;
 
-      final content = await file.readAsString();
+      final bytes = await file.readAsBytes();
+      final content = utf8.decode(bytes, allowMalformed: true);
+
+      final cleanContent = content.replaceAll(RegExp(r'[^a-fA-F0-9]'), '');
 
       final hashRegex = RegExp(r'[a-fA-F0-9]{64}');
-      final match = hashRegex.firstMatch(content);
+      final match = hashRegex.firstMatch(cleanContent);
 
       final isvalid = match?.group(0);
 
-      if(isvalid != null) {
+      if (isvalid != null) {
         return isvalid;
       } else {
-        infof('Hash verification successful', config.enableLogging);
+        warningf('Hash value not found in file. Raw content: $content', config.enableLogging);
         return null;
       }
     } catch (e, stackTrace) {
