@@ -3,14 +3,14 @@ import 'package:dio/dio.dart';
 import 'package:standalone_application_updater/src/domain/entities/sau_config.dart';
 import 'package:standalone_application_updater/src/domain/entities/sau_release.dart';
 import 'package:standalone_application_updater/src/domain/entities/sha256_check_result.dart';
+import 'package:standalone_application_updater/src/domain/interfaces/crypto_repository_interface.dart';
 import 'package:standalone_application_updater/src/domain/interfaces/sha256_check_service_interface.dart';
-import 'package:standalone_application_updater/src/infrastructure/repositories/crypto_repository.dart';
 import 'package:standalone_application_updater/src/utils/my_logger.dart';
 import 'package:path/path.dart' as p;
 
 class Sha256CheckService extends ISha256CheckService with MyLogger {
   final Dio dio;
-  final CryptoRepository cr;
+  final ICryptoRepository cr;
   final SauConfig config;
 
   Sha256CheckService({
