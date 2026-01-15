@@ -37,5 +37,6 @@ topics:
   - windows
 
 flutter:
-  platforms:
-    windows:
+
+platforms:
+  windows:
