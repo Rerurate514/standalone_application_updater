@@ -6,6 +6,5 @@ part 'sau_config.freezed.dart';
 sealed class SauConfig with _$SauConfig {
   factory SauConfig({
     @Default(false) bool enableLogging,
-    @Default(false) bool enableHashChecking,
   }) = _SauConfig;
 }

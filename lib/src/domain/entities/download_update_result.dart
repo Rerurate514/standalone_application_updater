@@ -1,10 +1,12 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:standalone_application_updater/src/domain/entities/download_progress.dart';
+import 'package:standalone_application_updater/standalone_application_updater.dart';
 
 part 'download_update_result.freezed.dart';
 
 abstract interface class IDownloadSuccess {
   String get savePath;
+  List<SauAsset> get assets;
+  SauAsset get target;
 }
 
 abstract interface class IDownloadFailure { }
@@ -16,7 +18,9 @@ sealed class DownloadUpdateResult with _$DownloadUpdateResult {
   // download success
   @Implements<IDownloadSuccess>()
   const factory DownloadUpdateResult.success({
-    required String savePath
+    required String savePath,
+    required List<SauAsset> assets,
+    required SauAsset target
   }) = DownloadUpdateSuccess;
 
   // download failure
@@ -24,8 +28,6 @@ sealed class DownloadUpdateResult with _$DownloadUpdateResult {
   const factory DownloadUpdateResult.failure({
     required Exception exception
   }) = DownloadUpdateFailure;
-
-  const factory DownloadUpdateResult.checkSha256Failed() = DownloadUpdateCheckSha256Faliled;
 }
 
 @freezed
@@ -40,7 +42,9 @@ sealed class DownloadUpdateStreamResult with _$DownloadUpdateStreamResult {
   // download success
   @Implements<IDownloadSuccess>()
   const factory DownloadUpdateStreamResult.success({
-    required String savePath
+    required String savePath,
+    required List<SauAsset> assets,
+    required SauAsset target
   }) = DownloadUpdateStreamSuccess;
 
   // download failure

@@ -5,11 +5,12 @@ export 'src/domain/entities/sau_platform.dart';
 export 'src/domain/entities/update_check_result.dart';
 export 'src/domain/entities/download_update_result.dart';
 export 'src/domain/entities/download_progress.dart';
+export '/src/domain/entities/sha256_check_result.dart';
 
 import 'package:standalone_application_updater/src/domain/interfaces/standalone_updater_interface.dart';
 
 import 'src/standalone_application_updater_stub.dart'
-    if (dart.library.io) 'src/standalone_application_updater_io.dart';
+  if (dart.library.io) 'src/standalone_application_updater_io.dart';
 
 class StandaloneApplicationUpdater {
   static IStandaloneUpdateBase get instance => getUpdater();

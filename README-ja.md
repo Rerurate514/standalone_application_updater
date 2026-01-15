@@ -23,8 +23,8 @@ MACOSとLINUXのPR待っています。
 ```dart
 // パッケージコンフィグを設定
 final config = SauConfig(
-    enableLogging: false,
-    enableHashChecking: true
+  enableLogging: false,
+  enableHashChecking: true
 );
 
 // パッケージインスタンスの取得
@@ -34,51 +34,62 @@ final updater = StandaloneApplicationUpdater.instance;
 // この比較は実行しているアプリのpubspecとGithubのreleaseのタグを比較します。
 // Githubタグはx.x.xまたはvx.x.xの形式です。(1.2.3 || v1.2.3)
 final updateCheckResult = await updater.checkForUpdates(
-    RepositoryInfo(owner: "リポジトリのオーナー名", repoName: "リポジトリの名前"), 
-    config
+  RepositoryInfo(owner: "リポジトリのオーナー名", repoName: "リポジトリの名前"), 
+  config
 );
 
 // downloadUpdateによってダウンロードを開始します。
 // このとき、checkForUpdatesからUpdateCheckAvailableというクラスが返ってきた時だけ、ダウンロードできます。
 // このUpdateCheckAvailableは最新版タグが存在している時だけ、かえってきます。
 // もし、UpdateCheckUpToDateが返ってきた場合は、実行しているアプリが最新版です。
-  if(updateCheckResult is UpdateCheckAvailable) {
-    final downloadResult = await updater.downloadUpdate(
-        updateCheckResult, 
-        config, 
-        savePath: "ここにzipなどを保存するパスを入れます。path_providerなどで取得するのがおすすめ"
-    );
+if(updateCheckResult is UpdateCheckAvailable) {
+  final downloadResult = await updater.downloadUpdate(updateCheckResult, config, savePath: "ダウンロード先のパス");
 
-    switch(downloadResult) {
-      case DownloadUpdateSuccess(): {
-        print("ダウンロードの成功");
+  switch(downloadResult) {
+    case DownloadUpdateSuccess(): {
+      print("ダウンロードの成功");
 
-        updater.applyUpdate(downloadResult, "ここにzipなどを解凍したときの内部パスを入れる", config);
+      final isSHA256Valid = await updater.checkSha256(downloadResult, config);
+      switch(isSHA256Valid) {
+        case Sha256CheckValid(): {
+          print("SHA256の整合性を確認");
+          updater.applyUpdate(downloadResult, "Windowsターゲットならzip内の実行ファイルまでのパス。(例：release/app.exe)", config);
+        }
+        case Sha256CheckInvalid(): {
+          print("SHA256が一致しません。");
+        }
+        case Sha256CheckNotExist(): {
+          print("SHA256ファイルが指定されたパスにが存在しません。");
+        }
+        case Sha256CheckFailed(): {
+          print("SHA256ファイルのダウンロード中に問題が発生しました。");
+        }
       }
-      case DownloadUpdateFailure(): {
-        print("ダウンロードの失敗 : ${downloadResult}");
-      }
-      case DownloadUpdateCheckSha256Faliled():
-        print("sha256チェックの失敗");
+    }
+    case DownloadUpdateFailure(): {
+      print("ダウンロードの失敗 : ${downloadResult}");
     }
   }
+} 
 
 // ストリームでダウンロード進捗を取得するならこっち
-// ただし、sha256チェックはサポートされません。
 if(updateCheckResult is UpdateCheckAvailable) {
-    updater.downloadUpdateStream(updateCheckResult,config).listen((downloadResult) {
-        switch(downloadResult) {
-            case DownloadUpdateStreamProgress(): {
-                print(downloadResult.downloadProgress.percentage);
-            }
-            case DownloadUpdateStreamSuccess(): {
-                print(downloadResult.savePath);
-            }
-            case DownloadUpdateStreamFailure(): {
-                print(downloadResult.message);
-            }
-        }
-    });
+  updater.downloadUpdateStream(updateCheckResult,config).listen((downloadResult) {
+    switch(downloadResult) {
+      case DownloadUpdateStreamProgress(): {
+        print(downloadResult.downloadProgress.percentage);
+      }
+      case DownloadUpdateStreamSuccess(): {
+        print(downloadResult.savePath);
+
+        final isSHA256Valid = await updater.checkSha256(downloadResult, config);
+        //ここから整合性チェックとアプリの実行までできます。
+      }
+      case DownloadUpdateStreamFailure(): {
+        print(downloadResult.message);
+      }
+    }
+  });
 }
 ```
 
@@ -91,7 +102,6 @@ if(updateCheckResult is UpdateCheckAvailable) {
 | `SauNotExistFileException`        | リリースは存在するが、現在の環境（OS/アーキテクチャ）に適合するアセットファイルが見つからない場合。      |
 | `SauDownloadException`            | ファイルのダウンロード中に通信が切断された場合、またはURLが無効な場合。                    |
 | `SauPermissionException`          | 指定された保存先ディレクトリに対して書き込み権限がない場合（管理者権限が必要な場所に保存しようとした際など）。  |
-| `SauHashMismatchException`        | ダウンロード完了後、ファイルのハッシュ値が期待される値と一致しなかった場合（ファイル破損の可能性）。       |
 | `SauArchiveException`             | ダウンロードしたアーカイブ（.zip等）の解凍処理に失敗した場合。                        |
 
 ## セキュリティ
