@@ -7,6 +7,8 @@ abstract interface class IDownloadSuccess {
   String get savePath;
 }
 
+abstract interface class IDownloadFailure { }
+
 @freezed
 sealed class DownloadUpdateResult with _$DownloadUpdateResult {
   const DownloadUpdateResult._();
@@ -18,9 +20,12 @@ sealed class DownloadUpdateResult with _$DownloadUpdateResult {
   }) = DownloadUpdateSuccess;
 
   // download failure
+  @Implements<IDownloadFailure>()
   const factory DownloadUpdateResult.failure({
     required Exception exception
   }) = DownloadUpdateFailure;
+
+  const factory DownloadUpdateResult.checkSha256Failed() = DownloadUpdateCheckSha256Faliled;
 }
 
 @freezed
