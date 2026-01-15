@@ -74,30 +74,32 @@ sealed class SauPlatform with _$SauPlatform {
   factory SauPlatform.fromFileName(String fileName) {
     final name = fileName.toLowerCase();
 
-    if (name.contains('windows') || name.contains('win64')) {
-      if (name.contains('arm64') || name.contains('aarch64')) {
-        return const SauPlatform.windowsArm64();
-      }
-      return const SauPlatform.windowsX64();
+    if (name.contains('windows')) {
+      if (name.contains('arm64')) return const SauPlatform.windowsArm64();
+      if (name.contains('x64')) return const SauPlatform.windowsX64();
     }
 
-    if (name.contains('macos') || name.contains('darwin') || name.contains('apple')) {
-      if (name.contains('universal')) {
-        return const SauPlatform.macosUniversal();
-      }
-      if (name.contains('arm64') || name.contains('aarch64') || name.contains('m1') || name.contains('m2')) {
-        return const SauPlatform.macosArm64();
-      }
-      return const SauPlatform.macosX64();
+    if (name.contains('macos')) {
+      if (name.contains('universal')) return const SauPlatform.macosUniversal();
+      if (name.contains('arm64')) return const SauPlatform.macosArm64();
+      if (name.contains('x64')) return const SauPlatform.macosX64();
     }
 
     if (name.contains('linux')) {
-      if (name.contains('arm64') || name.contains('aarch64')) {
-        return const SauPlatform.linuxArm64();
-      }
-      return const SauPlatform.linuxX64();
+      if (name.contains('arm64')) return const SauPlatform.linuxArm64();
+      if (name.contains('x64')) return const SauPlatform.linuxX64();
+    }
+
+    if (name.contains('win64')) return const SauPlatform.windowsX64();
+    if (name.contains('darwin') || name.contains('apple')) {
+      if (name.contains('arm64')) return const SauPlatform.macosArm64();
+      return const SauPlatform.macosX64();
     }
 
     throw UnsupportedError('Could not determine platform from file name: $fileName');
+  }
+
+  String buildFileName(String appName, String version) {
+    return '$appName-v$version-$osIdentifier-$archIdentifier$fileExtension';
   }
 }
