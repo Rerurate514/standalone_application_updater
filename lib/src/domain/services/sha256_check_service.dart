@@ -38,8 +38,8 @@ class Sha256CheckService extends ISha256CheckService with MyLogger {
     if(response == null) return Sha256CheckResult.failed();
 
     final isvalid = await cr.verifyFileHash(
-      p.join(savePath, target.name),
-      p.join(savePath, targetSha256.name) 
+      savePath,
+      "$savePath.sha256"
     );
 
     if(isvalid) {
