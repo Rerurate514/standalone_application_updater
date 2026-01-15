@@ -2,16 +2,16 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'sha256_check_result.freezed.dart';
 
-abstract interface class ISha256DownloadSuccess {}
+abstract interface class ISHA256DownloadSuccess {}
 
 @freezed
-sealed class Sha256CheckResult with _$Sha256CheckResult {
-  @Implements<ISha256DownloadSuccess>()
-  factory Sha256CheckResult.valid() = Sha256CheckValid;
-  @Implements<ISha256DownloadSuccess>()
-  factory Sha256CheckResult.invalid() = Sha256CheckInvalid;
+sealed class SHA256CheckResult with _$SHA256CheckResult {
+  @Implements<ISHA256DownloadSuccess>()
+  factory SHA256CheckResult.valid() = SHA256CheckValid;
+  @Implements<ISHA256DownloadSuccess>()
+  factory SHA256CheckResult.invalid() = SHA256CheckInvalid;
 
-  factory Sha256CheckResult.notExist() = Sha256CheckNotExist;
+  factory SHA256CheckResult.notExist() = SHA256CheckNotExist;
 
-  factory Sha256CheckResult.failed() = Sha256CheckFailed;
+  factory SHA256CheckResult.failed() = SHA256CheckFailed;
 }

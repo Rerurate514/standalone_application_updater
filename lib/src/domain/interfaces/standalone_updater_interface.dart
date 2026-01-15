@@ -58,16 +58,16 @@ abstract class IStandaloneUpdateBase {
     yield* dus.downloadUpdateStream(result, savePath: savePath);
   }
 
-  Future<Sha256CheckResult> checkSha256(IDownloadSuccess result, SauConfig config) async {
+  Future<SHA256CheckResult> checkSHA256(IDownloadSuccess result, SauConfig config) async {
     final Dio dio = Dio();
     final cr = CryptoRepository(config: config);
-    final Sha256CheckService scs = Sha256CheckService(
+    final SHA256CheckService scs = SHA256CheckService(
       dio: dio, 
       cr: cr, 
       config: config
     );
 
-    return await scs.checkSha256(
+    return await scs.checkSHA256(
       result.assets,
       result.target,
       result.savePath

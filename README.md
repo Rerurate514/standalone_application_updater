@@ -58,9 +58,9 @@ if(updateCheckResult is UpdateCheckAvailable) {
     case DownloadUpdateSuccess(): {
       print("Download successful");
 
-      final isSHA256Valid = await updater.checkSha256(downloadResult, config);
+      final isSHA256Valid = await updater.checkSHA256(downloadResult, config);
       switch(isSHA256Valid) {
-        case Sha256CheckValid(): {
+        case SHA256CheckValid(): {
           print("SHA256 integrity verified");
           // On Windows, provide the path to the executable inside the zip.
           updater.applyUpdate(
@@ -70,13 +70,13 @@ if(updateCheckResult is UpdateCheckAvailable) {
             isAutoExit: true //  If true, the app will automatically close after startup.
           );
         }
-        case Sha256CheckInvalid(): {
+        case SHA256CheckInvalid(): {
           print("SHA256 mismatch.");
         }
-        case Sha256CheckNotExist(): {
+        case SHA256CheckNotExist(): {
           print("SHA256 file not found at the specified path.");
         }
-        case Sha256CheckFailed(): {
+        case SHA256CheckFailed(): {
           print("An error occurred while downloading the SHA256 file.");
         }
       }

@@ -48,9 +48,9 @@ if(updateCheckResult is UpdateCheckAvailable) {
     case DownloadUpdateSuccess(): {
       print("ダウンロードの成功");
 
-      final isSHA256Valid = await updater.checkSha256(downloadResult, config);
+      final isSHA256Valid = await updater.checkSHA256(downloadResult, config);
       switch(isSHA256Valid) {
-        case Sha256CheckValid(): {
+        case SHA256CheckValid(): {
           print("SHA256の整合性を確認");
           updater.applyUpdate(
             downloadResult, 
@@ -59,13 +59,13 @@ if(updateCheckResult is UpdateCheckAvailable) {
             isAutoExit: true // trueなら起動後に自動的にアプリを終了させます
           );
         }
-        case Sha256CheckInvalid(): {
+        case SHA256CheckInvalid(): {
           print("SHA256が一致しません。");
         }
-        case Sha256CheckNotExist(): {
+        case SHA256CheckNotExist(): {
           print("SHA256ファイルが指定されたパスにが存在しません。");
         }
-        case Sha256CheckFailed(): {
+        case SHA256CheckFailed(): {
           print("SHA256ファイルのダウンロード中に問題が発生しました。");
         }
       }
@@ -86,7 +86,7 @@ if(updateCheckResult is UpdateCheckAvailable) {
       case DownloadUpdateStreamSuccess(): {
         print(downloadResult.savePath);
 
-        final isSHA256Valid = await updater.checkSha256(downloadResult, config);
+        final isSHA256Valid = await updater.checkSHA256(downloadResult, config);
         //ここから整合性チェックとアプリの実行までできます。
       }
       case DownloadUpdateStreamFailure(): {

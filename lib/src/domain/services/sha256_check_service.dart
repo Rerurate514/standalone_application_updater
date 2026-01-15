@@ -7,45 +7,45 @@ import 'package:standalone_application_updater/src/domain/interfaces/crypto_repo
 import 'package:standalone_application_updater/src/domain/interfaces/sha256_check_service_interface.dart';
 import 'package:standalone_application_updater/src/utils/my_logger.dart';
 
-class Sha256CheckService extends ISha256CheckService with MyLogger {
+class SHA256CheckService extends ISHA256CheckService with MyLogger {
   final Dio dio;
   final ICryptoRepository cr;
   final SauConfig config;
 
-  Sha256CheckService({
+  SHA256CheckService({
     required this.dio,
     required this.cr,
     required this.config
   });
   
   @override
-  Future<Sha256CheckResult> checkSha256(List<SauAsset> assets, SauAsset target, String savePath) async {
-    final targetSha256Name = "${target.name}.sha256";
-    final targetSha256Path = "$savePath.sha256";
+  Future<SHA256CheckResult> checkSHA256(List<SauAsset> assets, SauAsset target, String savePath) async {
+    final targetSHA256Name = "${target.name}.sha256";
+    final targetSHA256Path = "$savePath.sha256";
 
-    final SauAsset? targetSha256 = assets.firstWhereOrNull(
-      (asset) => asset.name == targetSha256Name
+    final SauAsset? targetSHA256 = assets.firstWhereOrNull(
+      (asset) => asset.name == targetSHA256Name
     );
 
-    if(targetSha256 == null) return Sha256CheckResult.notExist();
+    if(targetSHA256 == null) return SHA256CheckResult.notExist();
 
     final response = await _executeDownload(
-      targetSha256.downloadUrl, 
-      targetSha256Path, 
+      targetSHA256.downloadUrl, 
+      targetSHA256Path, 
       config
     );
 
-    if(response == null) return Sha256CheckResult.failed();
+    if(response == null) return SHA256CheckResult.failed();
 
     final isvalid = await cr.verifyFileHash(
       savePath,
-      targetSha256Path
+      targetSHA256Path
     );
 
     if(isvalid) {
-      return Sha256CheckResult.valid();
+      return SHA256CheckResult.valid();
     } else {
-      return Sha256CheckResult.invalid();
+      return SHA256CheckResult.invalid();
     }
   }
 
