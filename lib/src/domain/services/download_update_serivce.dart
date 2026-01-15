@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:path/path.dart' as p;
+import 'package:standalone_application_updater/src/domain/entities/sha256_check_result.dart';
 import 'package:standalone_application_updater/src/domain/interfaces/download_update_service_interface.dart';
+import 'package:standalone_application_updater/src/domain/services/sha256_check_service.dart';
 import 'package:standalone_application_updater/src/utils/exceptions.dart';
 import 'package:standalone_application_updater/src/utils/my_logger.dart';
 import 'package:standalone_application_updater/standalone_application_updater.dart';
@@ -11,9 +13,11 @@ import 'package:standalone_application_updater/standalone_application_updater.da
 class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
   final Dio dio;
   final SauConfig config;
+  final Sha256CheckService scs;
 
   DownloadUpdateSerivce({
     required this.dio,
+    required this.scs,
     required this.config
   });
 
@@ -33,24 +37,56 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
     );
 
     if(target == null) throw SauNotExistFileException.createException();
-  
+
     infof("Found Asset, Starting to download Asset...", config.enableLogging);
 
     final path = savePath != null ? p.join(savePath, target.name) : _getExecutableDirectory();
-    final response = await _executeDownload(target.downloadUrl, path, onProgress, config);
+    final response = await _executeDownload(target.downloadUrl, path, onProgress);
 
     infof("status code: ${response?.statusCode}", config.enableLogging);
 
     if(response == null) throw SauDownloadException.createException();
 
+    if(config.enableHashChecking) {
+      final isvalid = await _checkSha256(assets, target, path);
+
+      if(isvalid) {
+        return DownloadUpdateResult.success(savePath: path);
+      } else {
+        return DownloadUpdateResult.checkSha256Failed();
+      }
+    }
+
     return DownloadUpdateResult.success(savePath: path);
+  }
+
+  Future<bool> _checkSha256(
+    List<SauAsset> assets,
+    SauAsset target,
+    String savePath,
+  ) async {
+    final Sha256CheckResult result = await scs.checkSha256(assets, target, savePath);
+
+    switch(result) {
+      case Sha256CheckValid(): {
+        return true;
+      }
+      case Sha256CheckInvalid(): {
+        return false;
+      }
+      case Sha256CheckNotExist(): {
+        throw SauNotExistFileException.createException();
+      }
+      case Sha256CheckFailed(): {
+        throw SauDownloadException.createException();
+      }
+    }
   }
 
   Future<Response?> _executeDownload(
     String downloadUrl, 
     String savePath, 
     void Function(int received, int total)? onProgress,
-    SauConfig config,
   ) async {
     try{
       final response = await dio.download(
@@ -91,7 +127,7 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
     infof("Found Asset, Starting to download Asset...", config.enableLogging);
 
     final path = savePath != null ? p.join(savePath, target.name) : _getExecutableDirectory();
-    final downloadResult = _executeDownloadStream(target.downloadUrl, path, config);
+    final downloadResult = _executeDownloadStream(target.downloadUrl, path);
 
     yield* downloadResult;
   }
@@ -99,7 +135,6 @@ class DownloadUpdateSerivce extends IDownloadUpdateService with MyLogger {
   Stream<DownloadUpdateStreamResult> _executeDownloadStream(
     String downloadUrl, 
     String savePath, 
-    SauConfig config,
   ) {
     final controller = StreamController<DownloadUpdateStreamResult>();
 
