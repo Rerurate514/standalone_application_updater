@@ -42,8 +42,6 @@ class Sha256CheckService extends ISha256CheckService with MyLogger {
       targetSha256Path
     );
 
-    debug("$savePath, $targetSha256Path");
-
     if(isvalid) {
       return Sha256CheckResult.valid();
     } else {
