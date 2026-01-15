@@ -17,7 +17,7 @@ class CryptoRepository extends ICryptoRepository with MyLogger {
     final file = File(targetFilePath);
 
     if(!await file.exists()) {
-      warningf("SHA256 file is not exist in local.", config.enableLogging);
+      warningf("SHA256 file is not exist in local. ::: $targetFilePath", config.enableLogging);
       return false;
     }
 
