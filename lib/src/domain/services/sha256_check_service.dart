@@ -21,6 +21,7 @@ class Sha256CheckService extends ISha256CheckService with MyLogger {
   @override
   Future<Sha256CheckResult> checkSha256(List<SauAsset> assets, SauAsset target, String savePath) async {
     final targetSha256Name = "${target.name}.sha256";
+    final targetSha256Path = "$savePath.sha256";
 
     final SauAsset? targetSha256 = assets.firstWhereOrNull(
       (asset) => asset.name == targetSha256Name
@@ -30,7 +31,7 @@ class Sha256CheckService extends ISha256CheckService with MyLogger {
 
     final response = await _executeDownload(
       targetSha256.downloadUrl, 
-      savePath, 
+      targetSha256Path, 
       config
     );
 
@@ -38,8 +39,10 @@ class Sha256CheckService extends ISha256CheckService with MyLogger {
 
     final isvalid = await cr.verifyFileHash(
       savePath,
-      "$savePath.sha256"
+      targetSha256Path
     );
+
+    debug("$savePath, $targetSha256Path");
 
     if(isvalid) {
       return Sha256CheckResult.valid();
